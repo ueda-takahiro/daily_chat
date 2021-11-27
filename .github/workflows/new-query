@@ -1,0 +1,26 @@
+steps:
+  # copy last default branch result.
+  - name: cache with default branch result
+    uses: actions/cache@v2
+    with:
+      path: |
+        ~/cache
+      key: ${{ runner.os }}
+
+  - run: bash -c "! test -e ~/cache/new-queries || cp ~/cache/new-queries /new-queries"
+
+  # required
+  - uses: pyama86/welcome-new-query/enable-querylog@v1
+    with:
+      db_host: db
+
+  - name: Runs looking new query
+    id: analysis
+  - uses: pyama86/welcome-new-query/analysis@v1
+    with:
+      save_path: /new-queries
+      db_host: db
+
+  - name: Cache default branch result
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    run: cp /new-queries ~/cache/
