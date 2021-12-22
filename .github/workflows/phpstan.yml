@@ -16,4 +16,4 @@ jobs:
       - name: Composer install
         run: composer install
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyze --memory-limit=-1
+        run: vendor/bin/phpstan analyze tests --memory-limit=-1
