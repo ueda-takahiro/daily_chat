@@ -1,0 +1,19 @@
+name: PHPStan
+on: pull_request
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          tools: composer, cs2pr, phpstan
+          coverage: none
+      - name: Composer install
+        run: composer install
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyze --memory-limit=-1
