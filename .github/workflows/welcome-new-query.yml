@@ -1,6 +1,7 @@
 steps:
   # copy last default branch result.
   - name: cache with default branch result
+    on: [push]
     uses: actions/cache@v2
     with:
       path: |
