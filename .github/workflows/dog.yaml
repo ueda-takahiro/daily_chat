@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       # 1. reviewdog の setup action を追加
       - uses: reviewdog/action-setup@v1
         with:
@@ -20,12 +22,16 @@ jobs:
           # 2. reviewdog が コメントを書き込めるように token をセットする
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # 3. 構文チェックの結果を reviewdog へ渡す
-        run: ./vendor/bin/phpcs --report=emacs --standard=phpcs.xml ./ | reviewdog -reporter=github-pr-review -efm='%f:%l:%c:%m'
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs ./vendor/bin/phpcs --report=emacs --standard=phpcs.xml | reviewdog -name="phpcs" -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review -efm='%f:%l:%c:%m'
   # 静的解析
   analyse:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: tmp
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD
       # 1. reviewdog の setup action を追加
       - uses: reviewdog/action-setup@v1
         with:
@@ -37,4 +43,4 @@ jobs:
           # 2. reviewdog が コメントを書き込めるように token をセットする
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # 3. 静的解析の結果を reviewdog へ渡す
-        run: ./vendor/bin/phpstan analyse --error-format=raw --no-progress -l 5 index.php | reviewdog -reporter=github-pr-review -f=phpstan
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpstan analyse XXX --error-format=raw -l 5 | reviewdog -name="phpstan" -f=phpstan -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review
