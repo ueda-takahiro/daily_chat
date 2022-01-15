@@ -20,7 +20,7 @@ jobs:
           # 2. reviewdog が コメントを書き込めるように token をセットする
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # 3. 構文チェックの結果を reviewdog へ渡す
-        run: git diff remotes/origin/main --name-only | xargs ./vendor/bin/phpcs --report=emacs --standard=phpcs.xml | reviewdog -name="phpcs" -diff="git diff remotes/origin/main" -reporter=github-pr-review -efm='%f:%l:%c:%m'
+        run: git diff main --name-only | xargs ./vendor/bin/phpcs --report=emacs --standard=phpcs.xml | reviewdog -name="phpcs" -diff="git diff remotes/origin/main" -reporter=github-pr-review -efm='%f:%l:%c:%m'
   # 静的解析
   analyse:
     runs-on: ubuntu-latest
@@ -37,4 +37,4 @@ jobs:
           # 2. reviewdog が コメントを書き込めるように token をセットする
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # 3. 静的解析の結果を reviewdog へ渡す
-        run: git diff remotes/origin/main --name-only | xargs ./vendor/bin/phpstan analyse --error-format=raw -l 5 | reviewdog -name="phpstan" -f=phpstan -diff="git diff remotes/origin/main" -reporter=github-pr-review
+        run: git diff main --name-only | xargs -IXXX ./vendor/bin/phpstan analyse XXX --error-format=raw -l 5 | reviewdog -name="phpstan" -f=phpstan -diff="git diff remotes/origin/main" -reporter=github-pr-review
