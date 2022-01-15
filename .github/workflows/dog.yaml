@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: tmp
         run: echo ${{ github.head_ref }} , ${{ github.ref }} , ${{ github.ref_name }}
       # 1. reviewdog の setup action を追加
       - uses: reviewdog/action-setup@v1
