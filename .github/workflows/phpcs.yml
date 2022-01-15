@@ -9,7 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: PHPCS check
-        uses: chekalsky/phpcs-action@v1.2.0
-        with:
-          enable_warnings: true
-          phpcs_bin_path: "./vendor/bin/phpcs"
+        uses: chekalsky/phpcs-action@v1
