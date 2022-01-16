@@ -31,7 +31,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: tmp
-        run: git diff --name-only origin/${{ github.base_ref }} HEAD ${{ github.head_ref }}
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD
+      - name: tmp1
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD..${{ github.head_ref }}
       # 1. reviewdog の setup action を追加
       - uses: reviewdog/action-setup@v1
         with:
