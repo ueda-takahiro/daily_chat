@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Traits\PropertyAccessor;
 use App\Models\User;
+use Carbon\Traits\Test;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Tests\CreatesApplication;
 
 class DailyReportController extends Controller
 {
+    use PropertyAccessor, Test, CreatesApplication;
+
     /**
      * @return Response
      */
@@ -26,7 +31,16 @@ class DailyReportController extends Controller
      */
     public function index()
     {
-        //
+        $a = 1;
+        $b = 2;
+        $bar = 'test';
+        $foo = 'foo';
+        if ($a === $b) {
+            $foo = $bar ?? $a ?? $b;
+        } elseif ($a > $b) {
+            $variable = $foo ? 'colour' : 'gplus';
+        }
+        return $variable;
     }
 
     /**
