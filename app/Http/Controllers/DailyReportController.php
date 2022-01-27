@@ -29,18 +29,19 @@ class DailyReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index ()
     {
+
+
         $a = 1;
         $b = 2;
         $bar = 'test';
         $foo = 'foo';
-        if ($a===$b) {
-            $foo = $bar??$a??$b;
-        } elseif ($a>$b) {
-            $variable = $foo?'colour':'gplus';
-        }
-        return $variable;
+        if ($a === $b) {$foo = $bar ?? $a ?? $b;} elseif ($a > $b) {
+            $variable = $foo ? 'colour' : 'gplus';
+        }else{return $a+$b;}
+
+
     }
 
     /**
