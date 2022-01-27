@@ -1,8 +1,5 @@
 name: reviewdog
-on:
-  pull_request:
-    branches:
-      - main
+on: pull_request
 jobs:
   # 構文チェック
   lint:
@@ -10,8 +7,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          # 全てのブランチを取得する
           fetch-depth: 0
-      # 1. reviewdog の setup action を追加
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
@@ -19,12 +16,10 @@ jobs:
         run: composer require squizlabs/php_codesniffer
       - name: lint
         env:
-          # 2. reviewdog が コメントを書き込めるように token をセットする
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # 3. 構文チェックの結果を reviewdog へ渡す
-        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs ./vendor/bin/phpcs --report=emacs --standard=phpcs.xml | reviewdog -name="phpcs" -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review -efm='%f:%l:%c:%m'
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -XXX ./vendor/bin/phpcs XXX --report=emacs | reviewdog -name="phpcs" -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review -efm='%f:%l:%c:%m'
   # 静的解析
-  analyse:
+  analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,15 +27,27 @@ jobs:
           fetch-depth: 0
       - name: tmp
         run: git diff --name-only origin/${{ github.base_ref }} HEAD
-      # 1. reviewdog の setup action を追加
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
       - name: phpstan install
         run: composer require phpstan/phpstan
-      - name: analyse
+      - name: analyze
         env:
-          # 2. reviewdog が コメントを書き込めるように token をセットする
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # 3. 静的解析の結果を reviewdog へ渡す
-        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpstan analyse XXX --error-format=raw -l 5 | reviewdog -name="phpstan" -f=phpstan -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpstan analyze XXX --error-format=raw -l 5 | reviewdog -name="phpstan" -f=phpstan -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review
+
+  misspell:
+    name: check misspell
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: misspell
+        uses: reviewdog/action-misspell@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          locale: "US"
+          filter_mode: diff_context
+          exclude: |
+            "*.css" |
+            "*.js"
