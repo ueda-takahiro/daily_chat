@@ -35,11 +35,9 @@ class DailyReportController extends Controller
 
         $a = 1;
         $b = 2;
-        $bar = 'test';
-        $foo = 'foo';
-        if ($a === $b) {$foo = $bar ?? $a ?? $b;} elseif ($a > $b) {
-            $variable = $foo ? 'colour' : 'gplus';
-        }else{return $a+$b;}
+        $bar = 'colar';
+        $foo = 'tometo';
+        if ($a === $b) {$foo = $bar ?? $a ?? $b;} elseif ($a > $b) {$variable = $foo ? 'centar' : 'maib';}else{return $a+$b;}
 
 
     }
