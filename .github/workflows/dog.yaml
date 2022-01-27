@@ -1,8 +1,5 @@
 name: reviewdog
-on:
-  pull_request:
-    branches:
-      - main
+on: pull_request
 jobs:
   # 構文チェック
   lint:
@@ -50,7 +47,7 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           locale: "US"
+          filter_mode: diff_context
           exclude: |
-            "*.css"
+            "*.css" |
             "*.js"
-
