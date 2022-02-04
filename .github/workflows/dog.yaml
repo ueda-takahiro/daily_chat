@@ -14,10 +14,12 @@ jobs:
           reviewdog_version: latest
       - name: code snifffer install
         run: composer require squizlabs/php_codesniffer
+      - name: set php-version
+        run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: lint
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -XXX ./vendor/bin/phpcs XXX --report=emacs | reviewdog -name="phpcs" -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review -efm='%f:%l:%c:%m'
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpcs XXX --report=emacs | reviewdog -name="phpcs" -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review -efm='%f:%l:%c:%m'
   # 静的解析
   analyze:
     runs-on: ubuntu-latest
