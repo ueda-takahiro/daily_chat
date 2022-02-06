@@ -24,15 +24,17 @@ class DailyReportController extends Controller
         return Inertia::render('Dashboard', compact('users'));
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index( )
+
+    public function index(  )
     {
-        echo '1' +2 == 3 ?
-            1:0;
+        $a = 1;
+        $b = 2;
+        if($a<$b){
+            $result = new \stdClass()
+            ;
+            $result->message = '$b is larger than $a.';
+            return $result;
+        }
     }
 
     /**
