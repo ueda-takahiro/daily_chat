@@ -9,6 +9,7 @@ jobs:
         with:
           # 全てのブランチを取得する
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: set githubActions user
         run: |
           git config --local user.email "action@github.com"
