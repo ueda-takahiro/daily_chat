@@ -27,15 +27,15 @@ class DailyReportController extends Controller
     }
 
 
-    public function index()
+    public function index( )
     {
-        $a = 1;
-        $b = 2;
-        if ($a < $b) {
+        $a = 1;$b = 2;
+        if($a<$b){
             $result = new \stdClass()
             ;
             $result->message = '$b is larger than $a.';
-            return $result;
+            return$result;
+
         }
     }
 
