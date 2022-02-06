@@ -15,7 +15,7 @@ jobs:
           git config --local user.name "GitHub Action"
       - id: set-diff-file-names
         run: |
-          filenames=git diff --name-only origin/${{ github.base_ref }} HEAD
+          filenames= git diff --name-only origin/${{ github.base_ref }} HEAD
           echo "::set-output name=DiffFilenames::${filenames}"
       - uses: reviewdog/action-setup@v1
         with:
