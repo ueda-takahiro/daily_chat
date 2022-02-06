@@ -9,6 +9,10 @@ jobs:
         with:
           # 全てのブランチを取得する
           fetch-depth: 0
+      - id: set githubAction user
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
