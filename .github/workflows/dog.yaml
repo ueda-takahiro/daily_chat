@@ -1,5 +1,7 @@
 name: reviewdog
 on: pull_request
+env:
+  DIFF_FILE_NAMES: git diff --name-only origin/${{ github.base_ref }} HEAD
 jobs:
   # 構文チェック
   lint:
@@ -13,10 +15,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-      - id: set-diff-file-names
-        run: |
-          filenames= git diff --name-only origin/${{ github.base_ref }} HEAD
-          echo "::set-output name=DiffFilenames::${filenames}"
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
@@ -25,11 +23,11 @@ jobs:
       - name: set php-version
         run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: phpcbf & commit
-        run: ./vendor/bin/phpcbf ${{ steps.set-diff-file-names.outputs.DiffFilenames }} | git add ${{ steps.set-diff-file-names.outputs.DiffFilenames }} | git commit -m "fixed by phpcbf!"
+        run: ./vendor/bin/phpcbf ${{ env.DIFF_FILE_NAMES }} | git add ${{ env.DIFF_FILE_NAMES }} | git commit -m "fixed by phpcbf!"
       - name: lint
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./vendor/bin/phpcs ${{ steps.set-diff-file-names.outputs.DiffFilenames }} --report=emacs | reviewdog -name="phpcs" -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review -efm='%f:%l:%c:%m'
+        run: ./vendor/bin/phpcs ${{ env.DIFF_FILE_NAMES }} --report=emacs | reviewdog -name="phpcs" -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review -efm='%f:%l:%c:%m'
   # 静的解析
   analyze:
     runs-on: ubuntu-latest
