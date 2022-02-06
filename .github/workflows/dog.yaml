@@ -16,12 +16,8 @@ jobs:
         run: composer require squizlabs/php_codesniffer
       - name: set php-version
         run: ./vendor/bin/phpcs --config-set php_version 70234
-      - name: phpcbf
-        run: ./vendor/bin/phpcbf --standard=PSR2 app/Http/Controllers/DailyReportController.php
-      - name: git commit fixed phpcbf
-        run: |
-          git add .
-          git commit -m "fixed by phpcbf!"
+      - name: phpcbf & commit
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpcbf XXX | git add . | git commit -m "fixed by phpcbf!"
       - name: lint
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
