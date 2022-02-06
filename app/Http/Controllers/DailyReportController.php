@@ -31,9 +31,8 @@ class DailyReportController extends Controller
      */
     public function index( )
     {
-        echo
-            '1'
-            +2 == 3 ? 1;
+        echo '1' +2 == 3 ?
+            1:0;
     }
 
     /**
