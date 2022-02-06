@@ -9,7 +9,6 @@ jobs:
         with:
           # 全てのブランチを取得する
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.ref }}
       - name: set githubActions user
         run: |
           git config --local user.email "action@github.com"
@@ -25,9 +24,9 @@ jobs:
         run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: phpcbf & commit
         run: |
-          ./vendor/bin/phpcbf ${{ env.DIFF_FILE_NAMES }} || git add ${{ env.DIFF_FILE_NAMES }}
+          ./vendor/bin/phpcbf --standard=PSR2 ${{ env.DIFF_FILE_NAMES }} || git add ${{ env.DIFF_FILE_NAMES }}
           git commit -m "fixed by phpcbf" || echo "No changes to commit"
-          git push || true
+          git push || echo "No commit to push"
       - name: lint
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}

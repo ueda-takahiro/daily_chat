@@ -31,7 +31,7 @@ class DailyReportController extends Controller
     {
         $a = 1;
         $b = 2;
-        if ($a < $b) {
+        if($a<$b){
             $result = new \stdClass()
             ;
             $result->message = '$b is larger than $a.';
