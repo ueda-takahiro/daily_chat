@@ -1,7 +1,5 @@
 name: reviewdog
 on: pull_request
-env:
-  DIFF_FILE_NAMES: git diff --name-only origin/${{ github.base_ref }} HEAD
 jobs:
   # 構文チェック
   lint:
@@ -11,6 +9,8 @@ jobs:
         with:
           # 全てのブランチを取得する
           fetch-depth: 0
+      - name: set diff file names
+        run: 'DIFF_FILE_NAMES='git diff --name-only origin/${{ github.base_ref }} HEAD >> $GITHUB_ENV
       - id: set-githubAction-user
         run: |
           git config --local user.email "action@github.com"
