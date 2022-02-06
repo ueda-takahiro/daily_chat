@@ -25,8 +25,7 @@ jobs:
         run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: phpcbf & commit
         run: |
-          ./vendor/bin/phpcbf ${{ env.DIFF_FILE_NAMES }}
-          git add ${{ env.DIFF_FILE_NAMES }}
+          ./vendor/bin/phpcbf ${{ env.DIFF_FILE_NAMES }} || git add ${{ env.DIFF_FILE_NAMES }}
           git commit -m "fixed by phpcbf" || echo "No changes to commit"
           git push || true
       - name: lint
