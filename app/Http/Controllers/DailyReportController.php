@@ -12,7 +12,9 @@ use Tests\CreatesApplication;
 
 class DailyReportController extends Controller
 {
-    use PropertyAccessor, Test, CreatesApplication;
+    use PropertyAccessor;
+    use Test;
+    use CreatesApplication;
 
     /**
      * @return Response
@@ -25,11 +27,11 @@ class DailyReportController extends Controller
     }
 
 
-    public function index(  )
+    public function index()
     {
         $a = 1;
         $b = 2;
-        if($a<$b){
+        if ($a < $b) {
             $result = new \stdClass()
             ;
             $result->message = '$b is larger than $a.';
@@ -44,7 +46,6 @@ class DailyReportController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
