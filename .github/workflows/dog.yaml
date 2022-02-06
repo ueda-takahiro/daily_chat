@@ -25,13 +25,13 @@ jobs:
         run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: phpcbf & commit
         run: |
-          ./vendor/bin/phpcbf --standard=PSR2 ${{ env.DIFF_FILE_NAMES }} || git add ${{ env.DIFF_FILE_NAMES }}
+          ./vendor/bin/phpcbf --standard=PSR12 ${{ env.DIFF_FILE_NAMES }} || git add ${{ env.DIFF_FILE_NAMES }}
           git commit -m "fixed by phpcbf" || echo "No changes to commit"
           git push || echo "No commit to push"
       - name: lint
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./vendor/bin/phpcs ${{ env.DIFF_FILE_NAMES }} --report=emacs | reviewdog -name="phpcs" -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review -efm='%f:%l:%c:%m'
+        run: ./vendor/bin/phpcs --standard=PSR12 ${{ env.DIFF_FILE_NAMES }} --report=emacs | reviewdog -name="phpcs" -diff="${{ env.DIFF_FILE_NAMES }}" -reporter=github-pr-review -efm='%f:%l:%c:%m'
   # 静的解析
   analyze:
     runs-on: ubuntu-latest
