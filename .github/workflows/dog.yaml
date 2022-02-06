@@ -17,7 +17,7 @@ jobs:
       - name: set php-version
         run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: phpcbf & commit
-        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpcbf XXX | git add . | git commit -m "fixed by phpcbf!"
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpcbf XXX | xargs -IfixedFiles git add fixedFiles | git commit -m "fixed by phpcbf!"
       - name: lint
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
