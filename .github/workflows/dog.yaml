@@ -9,12 +9,12 @@ jobs:
         with:
           # 全てのブランチを取得する
           fetch-depth: 0
-      - name: set diff file names
-        run: 'DIFF_FILE_NAMES='git diff --name-only origin/${{ github.base_ref }} HEAD >> $GITHUB_ENV
-      - id: set-githubAction-user
+      - name: set githubActions user
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+      - name: set diff file names
+        run: 'DIFF_FILE_NAMES='git diff --name-only origin/${{ github.base_ref }} HEAD >> $GITHUB_ENV
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
