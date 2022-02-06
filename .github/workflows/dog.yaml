@@ -13,9 +13,9 @@ jobs:
         with:
           reviewdog_version: latest
       - name: phpcbf
-      - run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpcbf XXX
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpcbf XXX
       - name: git commit fixed phpcbf
-      - run: |
+        run: |
           git add .
           git commit -m "fixed by phpcbf!"
       - name: code snifffer install
