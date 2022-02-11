@@ -23,7 +23,7 @@ jobs:
         with:
           reviewdog_version: latest
       - name: setup php 7.2
-        run: sudo update-alternatives --set php /usr/bin/php7.2
+        run: sudo update-alternatives --set php /usr/bin/php7.4
         # From here: https://github.com/squizlabs/PHP_CodeSniffer
       - name: code snifffer install
         run: composer require squizlabs/php_codesniffer
@@ -53,7 +53,7 @@ jobs:
         with:
           reviewdog_version: latest
       - name: setup php 7.2
-        run: sudo update-alternatives --set php /usr/bin/php7.2
+        run: sudo update-alternatives --set php /usr/bin/php7.4
         # From here: https://github.com/phpstan/phpstan
       - name: phpstan install
         run: composer require phpstan/phpstan
