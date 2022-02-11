@@ -1,16 +1,19 @@
-name: reviewdog
+name: before_check
 on: pull_request
 jobs:
   # 構文チェック
   lint:
+    # From here: https://github:com/actions/virtual-environments
     runs-on: ubuntu-18.04
     steps:
+      # From here: https://github.com/actions/checkout
       - uses: actions/checkout@v2
         with:
           # 全てのブランチを取得する
           fetch-depth: 0
+          # From here: https://github.com/reviewdog/reviewdog
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: set githubActions user
+      - name: set git user
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -19,22 +22,29 @@ jobs:
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
+      - name: setup php 7.2
+        run: sudo update-alternatives --set php /usr/bin/php7.2
+        # From here: https://github.com/squizlabs/PHP_CodeSniffer
       - name: code snifffer install
         run: composer require squizlabs/php_codesniffer
       - name: set php-version
         run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: phpcbf & commit
         run: |
-          ./vendor/bin/phpcbf --standard=PSR12 ${{ env.DIFF_FILE_NAMES }} || git add ${{ env.DIFF_FILE_NAMES }}
+          ./vendor/bin/phpcbf --standard=PSR2 ${{ env.DIFF_FILE_NAMES }} || git add ${{ env.DIFF_FILE_NAMES }}
           git commit -m "fixed by phpcbf" || echo "No changes to commit"
           git push || echo "No commit to push"
       - name: lint
+        # コメントできる様にする
+        # From here: https://docs:github:com/ja/actions/security-guides/automatic-token-authentication
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./vendor/bin/phpcs --standard=PSR12 ${{ env.DIFF_FILE_NAMES }} --report=emacs | reviewdog -name="phpcs" -diff="${{ env.DIFF_FILE_NAMES }}" -reporter=github-pr-review -efm='%f:%l:%c:%m'
+          # 差分ファイル名を取得し、phpcsに渡す。その後コメントするreviewdogに結果を渡す。
+          # From here: https://docs:github:com/ja/actions/learn-github-actions/environment-variables
+        run: ./vendor/bin/phpcs --standard=phpcs.xml ${{ env.DIFF_FILE_NAMES }} --report=emacs | reviewdog -name="phpcs" -diff="${{ env.DIFF_FILE_NAMES }}" -reporter=github-pr-review -efm='%f:%l:%c:%m'
   # 静的解析
   analyze:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -42,24 +52,14 @@ jobs:
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
+      - name: setup php 7.2
+        run: sudo update-alternatives --set php /usr/bin/php7.2
+        # From here: https://github.com/phpstan/phpstan
       - name: phpstan install
         run: composer require phpstan/phpstan
+      - name: create ide_helper.php
+        run: php artisan config:clear && php artisan ide-helper:generate
       - name: analyze
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpstan analyze XXX --error-format=raw -l 5 | reviewdog -name="phpstan" -f=phpstan -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review
-
-  misspell:
-    name: check misspell
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: misspell
-        uses: reviewdog/action-misspell@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          locale: "US"
-          filter_mode: diff_context
-          exclude: |
-            "*.css" |
-            "*.js"
+        run: git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpstan analyze -l 5 -c phpstan.neon XXX --error-format=raw | reviewdog -name="phpstan" -f=phpstan -diff="git diff origin/${{ github.base_ref }} HEAD" -reporter=github-pr-review
