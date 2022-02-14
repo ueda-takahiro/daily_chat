@@ -29,6 +29,9 @@ class DailyReportController extends Controller
 
     public function index()
     {
+        $test = new TestController();
+        $test->index(1, 2);
+
         $a = 1;
         $b = 2;
         if($a<$b){
