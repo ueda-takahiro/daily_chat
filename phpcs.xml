@@ -6,7 +6,7 @@
 
     <!-- Our base rule: set to PSR12-->
     <rule ref="PSR12"/>
-
+    <exclude name="Generic.Files.LineLength"/>
     <rule ref="PSR12.Functions.ReturnTypeDeclaration"/>
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
 </ruleset>
