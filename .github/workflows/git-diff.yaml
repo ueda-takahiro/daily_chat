@@ -1,0 +1,13 @@
+on: pull_request
+name: CI
+jobs:
+  dump:
+    name: git didff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: technote-space/get-diff-action@v6
+        with:
+          PATTERNS: '*.php'
+      - run: echo ${{ env.GIT_DIFF }}
+
