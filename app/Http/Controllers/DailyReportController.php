@@ -29,17 +29,7 @@ class DailyReportController extends Controller
 
     public function index()
     {
-        $test = new TestController();
-        $test->index(1, 2);
-
-        $a = 1;
-        $b = 2;
-        if($a<$b){
-            $result = new \stdClass()
-            ;
-            $result->message = '$b is larger than $a.';
-            return$result;
-        }
+        echo 120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120120;
     }
 
     /**
