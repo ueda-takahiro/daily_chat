@@ -9,8 +9,5 @@ jobs:
         with:
           fetch-depth: 0
       - uses: technote-space/get-diff-action@v6
-        with:
-          SUFFIX_FILTER: |
-            **/**.php
       - run: echo ${{ env.GIT_DIFF }}
 
