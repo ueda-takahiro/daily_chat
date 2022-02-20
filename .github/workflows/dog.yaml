@@ -31,7 +31,7 @@ jobs:
         run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: phpcbf & commit
         run: |
-          ./vendor/bin/phpcbf --standard=PSR2 ${{ env.DIFF_FILE_NAMES }} || git add ${{ env.DIFF_FILE_NAMES }}
+          git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpcbf --standard=PSR2 XXX || git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX git add XXX
           git commit -m "fixed by phpcbf" || echo "No changes to commit"
           git push || echo "No commit to push"
       - name: lint
