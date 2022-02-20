@@ -13,6 +13,9 @@ jobs:
           fetch-depth: 0
           # From here: https://github.com/reviewdog/reviewdog
           ref: ${{ github.event.pull_request.head.ref }}
+      - name: git diff name-only into env.GIT_DIFF
+      - uses: technote-space/get-diff-action@v6
+        run: echo ${{ env.GIT_DIFF }}
       - name: set git user
         run: |
           git config --local user.email "action@github.com"
@@ -31,7 +34,7 @@ jobs:
         run: ./vendor/bin/phpcs --config-set php_version 70234
       - name: phpcbf & commit
         run: |
-          git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX ./vendor/bin/phpcbf --standard=PSR2 XXX || git diff --name-only origin/${{ github.base_ref }} HEAD | xargs -IXXX git add XXX
+          ./vendor/bin/phpcbf --standard=PSR2 ${{ env.GIT_DIFF }} || git add ${{ env.GIT_DIFF }}
           git commit -m "fixed by phpcbf" || echo "No changes to commit"
           git push || echo "No commit to push"
       - name: lint
@@ -41,7 +44,7 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # 差分ファイル名を取得し、phpcsに渡す。その後コメントするreviewdogに結果を渡す。
           # From here: https://docs:github:com/ja/actions/learn-github-actions/environment-variables
-        run: ./vendor/bin/phpcs --standard=phpcs.xml ${{ env.DIFF_FILE_NAMES }} --report=emacs | reviewdog -name="phpcs" -diff="${{ env.DIFF_FILE_NAMES }}" -reporter=github-pr-review -efm='%f:%l:%c:%m'
+        run: ./vendor/bin/phpcs --standard=phpcs.xml ${{ env.GIT_DIFF }} --report=emacs | reviewdog -name="phpcs" -diff="${{ env.GIT_DIFF }}" -reporter=github-pr-review -efm='%f:%l:%c:%m'
   # 静的解析
   analyze:
     runs-on: ubuntu-18.04
