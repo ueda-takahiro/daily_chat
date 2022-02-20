@@ -3,9 +3,11 @@ name: CI
 jobs:
   dump:
     name: git didff
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: technote-space/get-diff-action@v6
         with:
           PATTERNS: '*.php'
