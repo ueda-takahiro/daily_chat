@@ -13,8 +13,7 @@ jobs:
           fetch-depth: 0
           # From here: https://github.com/reviewdog/reviewdog
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: git diff name-only into env.GIT_DIFF
-        uses: technote-space/get-diff-action@v6
+      - uses: technote-space/get-diff-action@v6
         run: echo ${{ env.GIT_DIFF }}
       - name: set git user
         run: |
