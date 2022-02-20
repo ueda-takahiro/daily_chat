@@ -18,7 +18,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
       - name: set diff file names
-        run: git diff --name-only origin/${{ github.base_ref }} | xargs echo | xargs -IXXX DIFF_FILE_NAMES=XXX >> $GITHUB_ENV
+        run: git diff --name-only origin/${{ github.base_ref }} | xargs -IXXX DIFF_FILE_NAMES=XXX >> $GITHUB_ENV
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
