@@ -2,7 +2,7 @@ on: pull_request
 name: CI
 jobs:
   dump:
-    name: git didff
+    name: git diff
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2

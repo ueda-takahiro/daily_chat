@@ -15,7 +15,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
       - name: git diff name-only into env.GIT_DIFF
       - uses: technote-space/get-diff-action@v6
-      - run: echo ${{ env.GIT_DIFF }}
+        run: echo ${{ env.GIT_DIFF }}
       - name: set git user
         run: |
           git config --local user.email "action@github.com"
