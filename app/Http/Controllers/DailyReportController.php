@@ -29,7 +29,9 @@ class DailyReportController extends Controller
 
     public function index()
     {
-        if (random_int(1, 2) === 1) return;
+        if (random_int(1, 2) === 1) {
+            return;
+        }
         echo 12012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012001;
     }
 
