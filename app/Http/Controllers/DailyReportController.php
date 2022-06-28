@@ -12,7 +12,9 @@ use Tests\CreatesApplication;
 
 class DailyReportController extends Controller
 {
-    use PropertyAccessor, Test, CreatesApplication;
+    use PropertyAccessor;
+    use Test;
+    use CreatesApplication;
 
     /**
      * @return Response
@@ -24,16 +26,17 @@ class DailyReportController extends Controller
         return Inertia::render('Dashboard', compact('users'));
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index( )
+
+    public function index()
     {
-        echo '1' +2 == 3 ?
-            1:0;
+        if (random_int(1, 2) === 1) {
+            return;
+        }
+        echo 12012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012001;
     }
+
+//        $client = new S3Client();
+//        return $this->fileRepository->store($client->uploadFile($uploadedFile, $path));
 
     /**
      * Show the form for creating a new resource.
@@ -42,7 +45,6 @@ class DailyReportController extends Controller
      */
     public function create()
     {
-
     }
 
     /**

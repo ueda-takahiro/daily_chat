@@ -5,12 +5,9 @@
     <file>.</file>
 
     <!-- Our base rule: set to PSR12-->
-    <rule ref="PSR12"/>
-
-    <rule ref="Generic.Files.LineLength">
-        <properties>
-            <property name="lineLimit" value="120"/>
-            <property name="absoluteLineLimit" value="0"/>
-        </properties>
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
     </rule>
+    <rule ref="PSR12.Functions.ReturnTypeDeclaration"/>
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
 </ruleset>

@@ -3,7 +3,7 @@ sudo php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce902
 sudo php composer-setup.php
 sudo php -r "unlink('composer-setup.php');"
 sudo mv composer.phar /usr/local/bin/composer
-
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
 sudo yum -y install http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
 sudo yum -y install mysql-community-server
 

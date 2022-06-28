@@ -1,0 +1,13 @@
+on: pull_request
+name: CI
+jobs:
+  dump:
+    name: git diff
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: technote-space/get-diff-action@v6
+      - run: echo ${{ env.GIT_DIFF }}
+
