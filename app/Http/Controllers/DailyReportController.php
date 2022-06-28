@@ -29,8 +29,12 @@ class DailyReportController extends Controller
 
     public function index()
     {
+        if (random_int(1, 2) === 1) return;
         echo 12012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012012001;
     }
+
+//        $client = new S3Client();
+//        return $this->fileRepository->store($client->uploadFile($uploadedFile, $path));
 
     /**
      * Show the form for creating a new resource.
